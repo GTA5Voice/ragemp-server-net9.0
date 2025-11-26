@@ -56,10 +56,8 @@ public class SettingsService(Script script)
     {
         yield return Settings.VirtualServerUid;
         yield return Settings.IngameChannelId;
-        yield return Settings.DevChannelId;
         yield return Settings.FallbackChannelId;
         yield return Settings.IngameChannelPassword;
-        yield return Settings.DevChannelPassword;
         yield return Settings.DebuggingEnabled;
         yield return Settings.Language;
         yield return Settings.CalculationInterval;
