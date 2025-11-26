@@ -2,8 +2,12 @@
 For more information, visit our website: https://gta5voice.com
 We are not in any way affiliated, associated, authorized, endorsed by, or connected with Rockstar Games or Take-Two Interactive.
 
-## Quick setup
-1. Download the [latest pre-build version](https://github.com/GTA5Voice/ragemp-server-net9.0/releases).
+## Notes
+- If you're experienced in development, building from source is strongly recommended over using the pre-built version. The pre-built release doesn't support custom features like muting on death, delayed channel joining, and other gameplay-specific mechanics.
+- It is recommended to keep the code up to date to avoid security vulnerabilities and ensure compatibility. All updates are announced on our [Discord server](https://gta5voice.com/discord), including detailed changelogs and more.
+
+## Quick setup (only recommended for non-experienced users)
+1. Download the [latest pre-built version](https://github.com/GTA5Voice/ragemp-server-net9.0/releases).
 2. Put the downloaded release into the '`dotnet/resources`' folder.
 3. Register the resource in **settings.xml** as shown below:
 ```xml
@@ -31,7 +35,3 @@ We are not in any way affiliated, associated, authorized, endorsed by, or connec
 </meta>
 ```
 5. Make sure your Virtual Server UID is registered at [https://gta5voice.com](https://gta5voice.com).
-
-## Notes
-- If you're experienced in development, building from source is strongly recommended over using the pre-built version. The pre-built release doesn't support custom features like muting on death, delayed channel joining, and other gameplay-specific mechanics.
-- It is recommended to keep the code up to date to avoid security vulnerabilities and ensure compatibility. All updates are announced on our [Discord server](https://gta5voice.com/discord), including detailed changelogs and more.
