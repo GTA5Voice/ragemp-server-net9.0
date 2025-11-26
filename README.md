@@ -1,5 +1,5 @@
 ## GTA5Voice Server Integration (net9.0) for [RAGE Multiplayer](https://rage.mp)
-For more information, visit our website: https://gta5voice.com
+For more information, visit our website: https://gta5voice.com<br>
 We are not in any way affiliated, associated, authorized, endorsed by, or connected with Rockstar Games or Take-Two Interactive.
 
 ## Notes
