@@ -53,7 +53,7 @@ public class VoiceService
     /**
      * Load client data after connecting
      */
-    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange);
+    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange, bool ForceMuted);
 
     public void LoadLocalClientData(int remoteId)
     {
@@ -76,7 +76,8 @@ public class VoiceService
                     client.Player.Id,
                     pluginData?.TeamspeakId,
                     pluginData?.WebsocketConnection ?? false,
-                    pluginData?.CurrentVoiceRange ?? 0
+                    pluginData?.CurrentVoiceRange ?? 0,
+                    pluginData?.ForceMuted ?? false
                 );
             }).ToArray();
             
@@ -91,6 +92,22 @@ public class VoiceService
     {
         var vClients = GetOtherVoiceClientPlayers(remoteId);
         NAPI.ClientEvent.TriggerClientEventToPlayers(vClients, "Client:GTA5Voice:UpdateClientData", remoteId, pluginData);
+    }
+
+    public void SetForceMuted(Player player, bool forceMuted)
+    {
+        var client = FindClient(player);
+        if (client == null)
+        {
+            ConsoleLogger.Debug($"Couldn't find voice client (id: {player.Id})");
+            return;
+        }
+
+        var pluginData = client.GetPluginData() ?? new PluginData(null, false, 0, forceMuted);
+        if (pluginData.ForceMuted == forceMuted)
+            return;
+
+        client.SetPluginData(pluginData with { ForceMuted = forceMuted }, UpdateLocalClientData);
     }
 
     /**

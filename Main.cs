@@ -1,4 +1,5 @@
-﻿using GTA5Voice.Logging;
+﻿using GTA5Voice.Extensions;
+using GTA5Voice.Logging;
 using GTA5Voice.Services;
 using GTA5Voice.Voice.Services;
 using GTANetworkAPI;
@@ -31,6 +32,18 @@ public class Main : Script
             VoiceService.LoadLocalClientData(player.Id);
             vsClient?.Start();
         });
+    }
+
+    [ServerEvent(Event.PlayerDeath)]
+    public void OnPlayerDeath(Player player, Player killer, uint reason)
+    {
+        player.SetForceMuted(true);
+    }
+
+    [ServerEvent(Event.PlayerSpawn)]
+    public void OnPlayerSpawn(Player player)
+    {
+        player.SetForceMuted(false);
     }
 
     [ServerEvent(Event.PlayerDisconnected)]

@@ -26,4 +26,7 @@ public static class PlayerExtension
 
     public static RadioChannel? GetRadioChannel(this Player player)
         => Main.RadioService.GetRadioChannel(player.GetRadioFrequency());
+
+    public static void SetForceMuted(this Player player, bool forceMuted)
+        => Main.VoiceService.SetForceMuted(player, forceMuted);
 }
