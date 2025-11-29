@@ -4,6 +4,7 @@ using GTANetworkAPI;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using GTA5Voice.Extensions;
 
 namespace GTA5Voice.Voice.Services;
 
@@ -113,7 +114,7 @@ public class VoiceService
     /**
      * Removes a specific player from the data for all other voice clients
      */
-    public void RemoveLocalClientData(int remoteId)
+    private void RemoveLocalClientData(int remoteId)
     {
         var vClients = GetOtherVoiceClientPlayers(remoteId);
         NAPI.ClientEvent.TriggerClientEventToPlayers(vClients, "Client:GTA5Voice:RemoveClient", remoteId);
