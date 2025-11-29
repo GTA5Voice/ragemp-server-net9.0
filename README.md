@@ -16,7 +16,9 @@ We are not in any way affiliated, associated, authorized, endorsed by, or connec
    <resource src="gta5voice" />
 </config>
 ```
-4. Configure **meta.xml** according to your needs:
+
+## Configuration
+1. Configure **meta.xml** according to your needs:
 ```xml
 <meta>
   <info name="gta5voice" author="https://gta5voice.com" type="script" />
@@ -34,4 +36,4 @@ We are not in any way affiliated, associated, authorized, endorsed by, or connec
   </settings>
 </meta>
 ```
-5. Make sure your Virtual Server UID is registered at [https://gta5voice.com](https://gta5voice.com).
+2. Make sure your Virtual Server UID is registered at [https://gta5voice.com](https://gta5voice.com).
