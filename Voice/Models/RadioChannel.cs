@@ -56,12 +56,21 @@ public class RadioChannel
 
     private void UpdateRadioData()
     {
+        var activeTalkers = RadioMembers
+            .Where(m => m.IsTalking)
+            .Select(m => m.Player.Id)
+            .ToArray();
+
         foreach (var p in RadioMembers)
+        {
+            var list = activeTalkers.Where(id => id != p.Player.Id).ToArray();
+
             NAPI.ClientEvent.TriggerClientEvent(
                 p.Player,
                 "Client:GTA5Voice:UpdateRadioMembers",
-                GetRadioMemberIds().Where(id => id != p.Player.Id && p.IsTalking).ToArray()
+                list
             );
+        }
     }
     
     public RadioMember[] GetRadioMembers()
