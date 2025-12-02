@@ -5,6 +5,7 @@ We are not in any way affiliated, associated, authorized, endorsed by, or connec
 ## Notes
 - If you're experienced in development, building from source is strongly recommended over using the pre-built version. The pre-built release doesn't support custom features like muting on death, delayed channel joining, and other gameplay-specific mechanics.
 - It is recommended to keep the code up to date to avoid security vulnerabilities and ensure compatibility. All updates are announced on our [Discord server](https://gta5voice.com/discord), including detailed changelogs and more.
+- The documentation can be found here: https://docs.gta5voice.com
 
 ## Quick setup (only recommended for non-experienced users)
 1. Download the [latest pre-built version](https://github.com/GTA5Voice/ragemp-server-net9.0/releases).
