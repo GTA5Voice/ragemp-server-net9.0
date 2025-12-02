@@ -2,6 +2,9 @@
 For more information, visit our website: https://gta5voice.com<br>
 We are not in any way affiliated, associated, authorized, endorsed by, or connected with Rockstar Games or Take-Two Interactive.
 
+## Plugin download
+The latest plugin version can be found here: https://gta5voice.com/downloads
+
 ## Notes
 - If you're experienced in development, building from source is strongly recommended over using the pre-built version. The pre-built release doesn't support custom features like muting on death, delayed channel joining, and other gameplay-specific mechanics.
 - It is recommended to keep the code up to date to avoid security vulnerabilities and ensure compatibility. All updates are announced on our [Discord server](https://gta5voice.com/discord), including detailed changelogs and more.
