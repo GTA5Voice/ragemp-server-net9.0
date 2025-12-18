@@ -1,10 +1,7 @@
-﻿using GTA5Voice.Logging;
+using GTA5Voice.Logging;
 using GTA5Voice.Voice.Models;
 using GTANetworkAPI;
-using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using GTA5Voice.Extensions;
 
 namespace GTA5Voice.Voice.Services;
 
@@ -54,7 +51,7 @@ public class VoiceService
     /**
      * Load client data after connecting
      */
-    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange, bool ForceMuted, bool PhoneSpeakerEnabled);
+    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange, bool ForceMuted, bool PhoneSpeakerEnabled, int[] CurrentCallMembers);
 
     public void LoadLocalClientData(int remoteId)
     {
@@ -79,7 +76,8 @@ public class VoiceService
                     pluginData?.WebsocketConnection ?? false,
                     pluginData?.CurrentVoiceRange ?? 0,
                     pluginData?.ForceMuted ?? false,
-                    pluginData?.PhoneSpeakerEnabled ?? false
+                    pluginData?.PhoneSpeakerEnabled ?? false,
+                    pluginData?.CurrentCallMembers ?? []
                 );
             }).ToArray();
             
@@ -127,6 +125,25 @@ public class VoiceService
 
         client.SetPluginData(pluginData with { PhoneSpeakerEnabled = phoneSpeakerEnabled }, UpdateLocalClientData);
     }
+
+    public void SetCurrentCallMembers(Player player, int[] callMembers)
+    {
+        var client = FindClient(player);
+        if (client == null)
+        {
+            ConsoleLogger.Debug($"Couldn't find voice client (id: {player.Id})");
+            return;
+        }
+
+        var pluginData = client.GetPluginData();
+        if (pluginData == null || pluginData.CurrentCallMembers == callMembers)
+            return;
+        
+        client.SetPluginData(pluginData with { CurrentCallMembers = callMembers }, UpdateLocalClientData);
+    }
+
+    public void ClearCurrentCallMembers(Player player)
+        => SetCurrentCallMembers(player, []);
 
     /**
      * Removes a specific player from the data for all other voice clients

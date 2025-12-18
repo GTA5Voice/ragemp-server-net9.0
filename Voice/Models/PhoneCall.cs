@@ -1,4 +1,4 @@
-﻿using GTA5Voice.Extensions;
+using GTA5Voice.Extensions;
 using GTANetworkAPI;
 
 namespace GTA5Voice.Voice.Models;
@@ -39,6 +39,7 @@ public class PhoneCall
         player.TriggerEvent("Client:GTA5Voice:KillPhoneCall");
         player.ResetData("CurrentCall");
         player.SetPhoneSpeakerEnabled(false);
+        Main.VoiceService.ClearCurrentCallMembers(player);
         UpdateCall();
     }
 
@@ -47,11 +48,15 @@ public class PhoneCall
         var allIds = GetCallMembersIds();
 
         foreach (var p in CallMembers)
+        {
+            var otherMemberIds = allIds.Where(id => id != p.Id).ToArray();
             NAPI.ClientEvent.TriggerClientEvent(
                 p,
                 "Client:GTA5Voice:UpdatePhoneCall",
-                allIds.Where(id => id != p.Id).ToArray()
+                otherMemberIds
             );
+            Main.VoiceService.SetCurrentCallMembers(p, otherMemberIds.Select(id => (int)id).ToArray());
+        }
     }
 
     public void KillCall()
@@ -65,6 +70,7 @@ public class PhoneCall
         {
             member.ResetData("CurrentCall");
             member.SetPhoneSpeakerEnabled(false);
+            Main.VoiceService.ClearCurrentCallMembers(member);
         }
     }
 
