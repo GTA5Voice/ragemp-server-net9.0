@@ -54,7 +54,7 @@ public class VoiceService
     /**
      * Load client data after connecting
      */
-    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange, bool ForceMuted);
+    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange, bool ForceMuted, bool PhoneSpeakerEnabled);
 
     public void LoadLocalClientData(int remoteId)
     {
@@ -78,7 +78,8 @@ public class VoiceService
                     pluginData?.TeamspeakId,
                     pluginData?.WebsocketConnection ?? false,
                     pluginData?.CurrentVoiceRange ?? 0,
-                    pluginData?.ForceMuted ?? false
+                    pluginData?.ForceMuted ?? false,
+                    pluginData?.PhoneSpeakerEnabled ?? false
                 );
             }).ToArray();
             
@@ -104,11 +105,27 @@ public class VoiceService
             return;
         }
 
-        var pluginData = client.GetPluginData() ?? new PluginData(null, false, 0, forceMuted);
-        if (pluginData.ForceMuted == forceMuted)
+        var pluginData = client.GetPluginData();
+        if (pluginData == null || pluginData.ForceMuted == forceMuted)
             return;
 
         client.SetPluginData(pluginData with { ForceMuted = forceMuted }, UpdateLocalClientData);
+    }
+    
+    public void SetPhoneSpeakerEnabled(Player player, bool phoneSpeakerEnabled)
+    {
+        var client = FindClient(player);
+        if (client == null)
+        {
+            ConsoleLogger.Debug($"Couldn't find voice client (id: {player.Id})");
+            return;
+        }
+
+        var pluginData = client.GetPluginData();
+        if (pluginData == null || pluginData.PhoneSpeakerEnabled == phoneSpeakerEnabled)
+            return;
+
+        client.SetPluginData(pluginData with { PhoneSpeakerEnabled = phoneSpeakerEnabled }, UpdateLocalClientData);
     }
 
     /**

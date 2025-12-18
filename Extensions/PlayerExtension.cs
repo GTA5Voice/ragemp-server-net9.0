@@ -29,6 +29,9 @@ public static class PlayerExtension
 
     public static void SetForceMuted(this Player player, bool forceMuted)
         => Main.VoiceService.SetForceMuted(player, forceMuted);
+    
+    public static void SetPhoneSpeakerEnabled(this Player player, bool phoneSpeakerEnabled)
+        => Main.VoiceService.SetPhoneSpeakerEnabled(player, phoneSpeakerEnabled);
 
     public static void MoveToVoiceChannel(this Player player)
         => player.ToVoiceClient()?.Start();
