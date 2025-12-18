@@ -1,4 +1,6 @@
-﻿using GTANetworkAPI;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using GTANetworkAPI;
 using GTA5Voice.Definitions;
 using GTA5Voice.Logging;
 
@@ -20,9 +22,7 @@ public class SettingsService(Script script)
                 if (setting.Required && !setting.HasDefaultValue)
                 {
                     ConsoleLogger.Warning($"Missing or empty required setting: '{setting.Key}'");
-                    ConsoleLogger.Error("No default value found. Please update your meta.xml");
-                    Console.ReadKey();
-                    Environment.Exit(1);
+                    CancelStartup("No default value found. Please update your meta.xml");
                 }
 
                 if (setting.HasDefaultValue)
@@ -38,6 +38,17 @@ public class SettingsService(Script script)
 
             _settings[setting.Key] = value;
         }
+        CheckForConflicts();
+    }
+
+    private void CheckForConflicts()
+    {
+        // Check if ingame voice channel is in excluded channels
+        int ingameChannel = Get<int>(Settings.IngameChannelId.Key);
+        int[] excludedChannels = JsonSerializer.Deserialize<int[]>(Get<string>(Settings.ExcludedChannels.Key))!;
+
+        if (excludedChannels.Contains(ingameChannel))
+            CancelStartup("The ingame channel cannot be excluded. Please update your meta.xml");
     }
 
     public string? Get(string key)
@@ -50,6 +61,13 @@ public class SettingsService(Script script)
 
         try { return (T)Convert.ChangeType(value, typeof(T)); }
         catch { return defaultValue; }
+    }
+
+    private void CancelStartup(string error)
+    {
+        ConsoleLogger.Error(error);
+        Console.ReadKey();
+        Environment.Exit(1);
     }
 
     private static IEnumerable<ISetting> GetAllDefinedSettings()

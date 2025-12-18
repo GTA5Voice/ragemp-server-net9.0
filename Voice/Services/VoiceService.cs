@@ -1,9 +1,7 @@
-﻿using GTA5Voice.Logging;
+using GTA5Voice.Logging;
 using GTA5Voice.Voice.Models;
 using GTANetworkAPI;
-using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using GTA5Voice.Extensions;
 
 namespace GTA5Voice.Voice.Services;
@@ -54,7 +52,7 @@ public class VoiceService
     /**
      * Load client data after connecting
      */
-    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange, bool ForceMuted);
+    private record VoiceClientData(ushort RemoteId, int? TeamspeakId, bool WebsocketConnection, float CurrentVoiceRange, bool ForceMuted, bool PhoneSpeakerEnabled, int[] CurrentCallMembers);
 
     public void LoadLocalClientData(int remoteId)
     {
@@ -78,7 +76,9 @@ public class VoiceService
                     pluginData?.TeamspeakId,
                     pluginData?.WebsocketConnection ?? false,
                     pluginData?.CurrentVoiceRange ?? 0,
-                    pluginData?.ForceMuted ?? false
+                    pluginData?.ForceMuted ?? false,
+                    pluginData?.PhoneSpeakerEnabled ?? false,
+                    pluginData?.CurrentCallMembers ?? []
                 );
             }).ToArray();
             
@@ -104,12 +104,51 @@ public class VoiceService
             return;
         }
 
-        var pluginData = client.GetPluginData() ?? new PluginData(null, false, 0, forceMuted);
-        if (pluginData.ForceMuted == forceMuted)
+        var pluginData = client.GetPluginData();
+        if (pluginData == null || pluginData.ForceMuted == forceMuted)
             return;
 
         client.SetPluginData(pluginData with { ForceMuted = forceMuted }, UpdateLocalClientData);
     }
+    
+    public void SetPhoneSpeakerEnabled(Player player, bool phoneSpeakerEnabled)
+    {
+        var client = FindClient(player);
+        if (client == null)
+        {
+            ConsoleLogger.Debug($"Couldn't find voice client (id: {player.Id})");
+            return;
+        }
+
+        // Prevent to enable phone speaker while not on phone call
+        if (player.GetCurrentCall() == null)
+            phoneSpeakerEnabled = false;
+
+        var pluginData = client.GetPluginData();
+        if (pluginData == null || pluginData.PhoneSpeakerEnabled == phoneSpeakerEnabled)
+            return;
+
+        client.SetPluginData(pluginData with { PhoneSpeakerEnabled = phoneSpeakerEnabled }, UpdateLocalClientData);
+    }
+
+    public void SetCurrentCallMembers(Player player, int[] callMembers)
+    {
+        var client = FindClient(player);
+        if (client == null)
+        {
+            ConsoleLogger.Debug($"Couldn't find voice client (id: {player.Id})");
+            return;
+        }
+
+        var pluginData = client.GetPluginData();
+        if (pluginData == null || pluginData.CurrentCallMembers == callMembers)
+            return;
+        
+        client.SetPluginData(pluginData with { CurrentCallMembers = callMembers }, UpdateLocalClientData);
+    }
+
+    public void ClearCurrentCallMembers(Player player)
+        => SetCurrentCallMembers(player, []);
 
     /**
      * Removes a specific player from the data for all other voice clients
