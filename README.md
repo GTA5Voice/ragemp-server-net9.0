@@ -38,6 +38,9 @@ We are not in any way affiliated, associated, authorized, endorsed by, or connec
     <setting name="CalculationInterval" value="250" description="Calculation tick interval" />
     <setting name="VoiceRanges" value="[2, 5, 8, 15]" description="Usable voice ranges" />
     <setting name="ExcludedChannels" value="[100, 200, 300]" description="Channels excluded from voice chat transfers. It is recommended to exclude only restricted channels, not open ones" />
+    <setting name="EnableDistanceBasedVolume" value="false" description="Enables distance-based volume attenuation to make remote players quieter" />
+    <setting name="VolumeDecreaseMultiplier" value="1.0" description="Scales how strongly volume decreases with distance when distance-based volume is enabled" />
+    <setting name="MinimumVoiceVolume" value="0.25" description="Lowest allowed voice volume level when distance-based volume attenuation is applied" />
   </settings>
 </meta>
 ```
