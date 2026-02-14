@@ -13,4 +13,7 @@ public class VoiceData(SettingsService settingsService)
     public int CalculationInterval { get; set; } = settingsService.Get<int>(Settings.CalculationInterval.Key);
     public string VoiceRanges { get; set; } = settingsService.Get<string>(Settings.VoiceRanges.Key);
     public string ExcludedChannels { get; set; } = settingsService.Get<string>(Settings.ExcludedChannels.Key);
+    public bool EnableDistanceBasedVolume { get; set; } = settingsService.Get<bool>(Settings.EnableDistanceBasedVolume.Key);
+    public double VolumeDecreaseMultiplier { get; set; } = settingsService.Get<double>(Settings.VolumeDecreaseMultiplier.Key);
+    public double MinimumVoiceVolume { get; set; } = settingsService.Get<double>(Settings.MinimumVoiceVolume.Key);
 }

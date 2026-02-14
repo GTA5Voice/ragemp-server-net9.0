@@ -11,4 +11,7 @@ internal static class Settings
     internal static readonly Setting<int> CalculationInterval = new("CalculationInterval", defaultValue: 250);
     internal static readonly Setting<string> VoiceRanges = new("VoiceRanges", defaultValue: "[1, 3, 8, 15]");
     internal static readonly Setting<string> ExcludedChannels = new("ExcludedChannels");
+    internal static readonly Setting<bool> EnableDistanceBasedVolume = new("EnableDistanceBasedVolume", defaultValue: false);
+    internal static readonly Setting<double> VolumeDecreaseMultiplier = new("VolumeDecreaseMultiplier");
+    internal static readonly Setting<double> MinimumVoiceVolume = new("MinimumVoiceVolume", defaultValue: 0.25);
 }

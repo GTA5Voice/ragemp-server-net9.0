@@ -81,5 +81,8 @@ public class SettingsService(Script script)
         yield return Settings.CalculationInterval;
         yield return Settings.VoiceRanges;
         yield return Settings.ExcludedChannels;
+        yield return Settings.EnableDistanceBasedVolume;
+        yield return Settings.VolumeDecreaseMultiplier;
+        yield return Settings.MinimumVoiceVolume;
     }
 }
